@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: inventory-service
+  datasource:
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:9196}
+server:
+  port: ${INVENTORY_SERVICE_PORT}
+  servlet:
+    context-path: /inventory
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+        defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+  instance:
+    hostname: ${HOSTNAME:localhost}
+springdoc:
+  open-api:
+    service:
+      title: Inventory Service
+      version: 1.0.0
+      url: ${HOST}/inventory
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
