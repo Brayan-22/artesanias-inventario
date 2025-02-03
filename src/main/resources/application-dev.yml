@@ -2,12 +2,13 @@ spring:
   application:
     name: inventory-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/artesanias
-    username: postgres
-    password: artesanias
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/artesanias}
+    username: ${JDBC_DATABASE_USERNAME:postgres}
+    password: ${JDBC_DATABASE_PASSWORD:artesanias}
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
+    driver-class-name: org.postgresql.Driver
   jpa:
     database: postgresql
     hibernate:
@@ -17,7 +18,27 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  config:
+    import: optional:configserver:${CONFIG_SERVER_URL:http://localhost:9196}
 server:
-  port: 9099
+  port: 9091
   servlet:
     context-path: /inventory
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+        defaultZone: ${EUREKA_URI:http://localhost:8761/eureka/}
+  instance:
+    hostname: ${HOSTNAME:localhost}
+springdoc:
+  open-api:
+    service:
+      title: Inventory Service
+      version: 1.0.0
+      url: http:localhost:8081/inventory
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

@@ -6,11 +6,11 @@ services:
       - JDBC_DATABASE_URL=jdbc:postgresql://${RDS_URL}:5432/postgres
       - JDBC_DATABASE_USERNAME=${DB_USERNAME}
       - JDBC_DATABASE_PASSWORD=${DB_PASSWORD}
-      - COMMERCE_SERVICE_PORT=9090
+      - INVENTORY_SERVICE_PORT=9090
       - HOST=https://restauranteapirest.brayandev.info
       - EUREKA_URI=http://artesanias-discovery-server:8761/eureka/
-      - HOSTNAME=artesanias-commerce-service
-    hostname: artesanias-commerce-service
+      - HOSTNAME=artesanias-inventory-service
+    hostname: artesanias-inventory-service
     networks:
       - backend
     deploy:
