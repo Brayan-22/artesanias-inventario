@@ -1,6 +1,6 @@
 spring:
   application:
-    name: inventory-service
+    name: management-service
   datasource:
     url: ${JDBC_DATABASE_URL}
     username: ${JDBC_DATABASE_USERNAME}
@@ -23,7 +23,7 @@ spring:
 server:
   port: ${INVENTORY_SERVICE_PORT}
   servlet:
-    context-path: /inventory
+    context-path: /management
 eureka:
   client:
     fetch-registry: true
@@ -35,9 +35,9 @@ eureka:
 springdoc:
   open-api:
     service:
-      title: Inventory Service
+      title: Management Service
       version: 1.0.0
-      url: ${HOST}/inventory
+      url: ${HOST}/management
   api-docs:
     path: /v3/api-docs
   swagger-ui:

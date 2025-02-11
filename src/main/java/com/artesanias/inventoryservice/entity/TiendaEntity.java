@@ -26,4 +26,9 @@ public class TiendaEntity implements Serializable {
     private String nombre;
     @OneToMany(mappedBy = "tienda")
     private Set<AlmacenEntity> almacenes;
+
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "\"id_ubicacion\"")
+    private Ubicacion ubicacion;
+
 }

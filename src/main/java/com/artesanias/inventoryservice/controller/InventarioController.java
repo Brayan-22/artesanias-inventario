@@ -6,14 +6,12 @@ import com.artesanias.inventoryservice.services.InventarioService;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/inventario")
 public class InventarioController {
     private final InventarioService inventarioService;
 
@@ -23,12 +21,12 @@ public class InventarioController {
         return ResponseEntity.ok(inventarioService.getProductosTodasSedes(page,size));
     }
 
-    @GetMapping(value = "/sucursal/{idsucursal}",produces = "application/json",path = "/sucursal/{idsucursal}")
-    public ResponseEntity<?> getProductosBySede(@RequestParam Integer page,
+    @GetMapping(value = "/tienda/{idTienda}",produces = "application/json",path = "/tienda/{idTienda}")
+    public ResponseEntity<?> getProductosByTienda(@RequestParam Integer page,
                                                @RequestParam Integer size,
-                                               @Parameter(description = "Id sucursal",required = true)
-                                                    @PathVariable String idsucursal){
-        return ResponseEntity.ok(inventarioService.getProductosBySede(page,size,idsucursal));
+                                               @Parameter(description = "Id tienda",required = true)
+                                                    @PathVariable String idTienda){
+        return ResponseEntity.ok(inventarioService.getProductosBySede(page,size,idTienda));
     }
 
     @GetMapping(value = "/central/all",produces = "application/json")

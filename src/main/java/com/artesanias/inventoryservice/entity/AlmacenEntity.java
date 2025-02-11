@@ -28,4 +28,9 @@ public class AlmacenEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "\"id_tienda\"")
     private TiendaEntity tienda;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "\"id_ubicacion\"")
+    private Ubicacion ubicacion;
+
 }

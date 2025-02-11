@@ -23,7 +23,7 @@ spring:
 server:
   port: 9091
   servlet:
-    context-path: /inventory
+    context-path: /management
 eureka:
   client:
     fetch-registry: true

@@ -2,7 +2,7 @@ package com.artesanias.inventoryservice.services.impl;
 
 import com.artesanias.inventoryservice.dto.ProductoDisponibleResponseDto;
 import com.artesanias.inventoryservice.exception.ProductosNotFoundException;
-import com.artesanias.inventoryservice.exception.SedeNotFoundException;
+import com.artesanias.inventoryservice.exception.tiendanotfoundexception;
 import com.artesanias.inventoryservice.repository.InventarioRepository;
 import com.artesanias.inventoryservice.repository.TiendaRepository;
 import com.artesanias.inventoryservice.services.InventarioService;
@@ -31,10 +31,10 @@ public class InventarioServiceImpl implements InventarioService {
     }
 
     @Override
-    public List<ProductoDisponibleResponseDto> getProductosBySede(Integer page, Integer size, String idSede) throws ProductosNotFoundException, SedeNotFoundException {
+    public List<ProductoDisponibleResponseDto> getProductosBySede(Integer page, Integer size, String idSede) throws ProductosNotFoundException, tiendanotfoundexception {
         if (Objects.isNull(page) || Objects.isNull(size)) throw new ProductosNotFoundException("No se encontraron productos");
         if (page < 0 || size < 0) throw new ProductosNotFoundException("No se encontraron productos");
-        tiendaRepository.findById(idSede).orElseThrow(() -> new SedeNotFoundException("No se encontró la sede"));
+        tiendaRepository.findById(idSede).orElseThrow(() -> new tiendanotfoundexception("No se encontró la sede"));
         Pageable pageable = PageRequest.of(page, size);
         return inventarioRepository.findProductosBySede(pageable, idSede).map(ProductoDisponibleResponseDto::new).toList();
     }
