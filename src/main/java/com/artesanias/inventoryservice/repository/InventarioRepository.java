@@ -149,8 +149,8 @@ public interface InventarioRepository extends JpaRepository<InventarioEntity, In
     boolean findInventarioEntityByAlmacen_IdAndProducto_Id(String almacenId, String productoId);
 
     @Query(value = """
-    update inventario I set cantidad = :cantidad
-    where I.id_almacen = :idAlmacen and I.id_productopk = :idProducto;
+    update inventario set cantidad = :cantidad
+    where id_almacen = :idAlmacen and id_productopk = :idProducto;
     """,nativeQuery = true)
     @Modifying(clearAutomatically = true)
     int updateInventarioByAlmacen(String idAlmacen, String idProducto, Long cantidad);
