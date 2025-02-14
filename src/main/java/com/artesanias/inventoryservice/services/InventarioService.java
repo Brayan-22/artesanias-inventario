@@ -1,10 +1,8 @@
 package com.artesanias.inventoryservice.services;
 
-import com.artesanias.inventoryservice.dto.ProductoAlmacenResponseDto;
-import com.artesanias.inventoryservice.dto.ProductoDisponibleResponseDto;
-import com.artesanias.inventoryservice.dto.ProductoInventarioByAlmacenDto;
-import com.artesanias.inventoryservice.dto.UpdateInventoryByAlmacenRequestDto;
+import com.artesanias.inventoryservice.dto.*;
 import com.artesanias.inventoryservice.exception.AlmacenNotFoundException;
+import com.artesanias.inventoryservice.exception.InventarioNotUpdatedException;
 import com.artesanias.inventoryservice.exception.ProductosNotFoundException;
 import com.artesanias.inventoryservice.exception.Tiendanotfoundexception;
 
@@ -20,5 +18,9 @@ public interface InventarioService {
 
     List<ProductoInventarioByAlmacenDto> getInventarioByAlmacen(String idalmacen,Integer page,Integer size) throws AlmacenNotFoundException;
 
-    UpdateInventoryByAlmacenRequestDto patchInventarioProductoByAlmacen(UpdateInventoryByAlmacenRequestDto producto);
+    UpdateInventoryByAlmacenRequestDto patchInventarioProductoByAlmacen(UpdateInventoryByAlmacenRequestDto producto) throws AlmacenNotFoundException, ProductosNotFoundException, InventarioNotUpdatedException;
+
+    CreateProductoInventarioDto saveProductoInventario(String idalmacen, CreateProductoInventarioDto producto)throws AlmacenNotFoundException, ProductosNotFoundException,InventarioNotUpdatedException;
+
+    DeleteInventarioRequestDto deleteInventario(DeleteInventarioRequestDto request)throws AlmacenNotFoundException, ProductosNotFoundException, InventarioNotUpdatedException;
 }

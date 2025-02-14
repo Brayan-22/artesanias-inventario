@@ -1,9 +1,6 @@
 package com.artesanias.inventoryservice.services.impl;
 
-import com.artesanias.inventoryservice.dto.ProductoAlmacenResponseDto;
-import com.artesanias.inventoryservice.dto.ProductoDisponibleResponseDto;
-import com.artesanias.inventoryservice.dto.ProductoInventarioByAlmacenDto;
-import com.artesanias.inventoryservice.dto.UpdateInventoryByAlmacenRequestDto;
+import com.artesanias.inventoryservice.dto.*;
 import com.artesanias.inventoryservice.exception.AlmacenNotFoundException;
 import com.artesanias.inventoryservice.exception.InventarioNotUpdatedException;
 import com.artesanias.inventoryservice.exception.ProductosNotFoundException;
@@ -17,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -86,6 +84,7 @@ public class InventarioServiceImpl implements InventarioService {
         return inventarioRepository.findInventarioByAlmacenId(idalmacen,pageable).map(ProductoInventarioByAlmacenDto::new).toList();
     }
 
+    @Transactional
     @Override
     public UpdateInventoryByAlmacenRequestDto patchInventarioProductoByAlmacen(UpdateInventoryByAlmacenRequestDto producto) throws InventarioNotUpdatedException {
         if (Objects.isNull(producto)) throw new InventarioNotUpdatedException("El json no puede ser nulo");
@@ -95,5 +94,31 @@ public class InventarioServiceImpl implements InventarioService {
         int updated = inventarioRepository.updateInventarioByAlmacen(producto.getIdAlmacen(), producto.getIdProducto(), producto.getCantidad());
         if (updated == 0) throw new InventarioNotUpdatedException("No se pudo actualizar el inventario");
         return producto;
+    }
+
+    @Transactional
+    @Override
+    public CreateProductoInventarioDto saveProductoInventario(String idalmacen, CreateProductoInventarioDto producto) throws AlmacenNotFoundException, ProductosNotFoundException, InventarioNotUpdatedException {
+        if (Objects.isNull(idalmacen) || idalmacen.isEmpty()) throw new AlmacenNotFoundException("No se encontró el almacén");
+        if (Objects.isNull(producto)) throw new ProductosNotFoundException("No se encontró el producto");
+        if (producto.getCantidad() < 0) throw new InventarioNotUpdatedException("Cantidad no permitida");
+        if (Objects.isNull(producto.getIdProducto()) || producto.getIdProducto().isEmpty()) throw new ProductosNotFoundException("No se encontró el producto");
+        if (Objects.isNull(producto.getIdAlmacen()) || producto.getIdAlmacen().isEmpty()) throw new AlmacenNotFoundException("No se encontró el almacen");
+        if (inventarioRepository.existsInventarioByAlmacenIdAndProductoId(producto.getIdAlmacen(), producto.getIdProducto())>0)
+            throw new InventarioNotUpdatedException("Ya existe un inventario con la solicitud");
+        inventarioRepository.saveProductoInventario(idalmacen, producto.getIdProducto(), producto.getCantidad());
+        return producto;
+    }
+
+    @Transactional
+    @Override
+    public DeleteInventarioRequestDto deleteInventario(DeleteInventarioRequestDto request) throws AlmacenNotFoundException, ProductosNotFoundException, InventarioNotUpdatedException {
+        if (Objects.isNull(request)) throw new InventarioNotUpdatedException("El json no puede ser nulo");
+        if (Objects.isNull(request.getIdAlmacen()) || request.getIdAlmacen().isEmpty()) throw new AlmacenNotFoundException("No se encontró el almacén");
+        if (Objects.isNull(request.getIdProducto()) || request.getIdProducto().isEmpty()) throw new ProductosNotFoundException("No se encontró el producto");
+        if (inventarioRepository.existsInventarioByAlmacenIdAndProductoId(request.getIdAlmacen(), request.getIdProducto())==0)
+            throw new InventarioNotUpdatedException("No se encontraron inventarios con la solicitud");
+        inventarioRepository.deleteInventario(request.getIdAlmacen(), request.getIdProducto());
+        return request;
     }
 }

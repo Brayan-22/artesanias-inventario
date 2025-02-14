@@ -1,5 +1,7 @@
 package com.artesanias.inventoryservice.controller;
 
+import com.artesanias.inventoryservice.dto.CreateProductoInventarioDto;
+import com.artesanias.inventoryservice.dto.DeleteInventarioRequestDto;
 import com.artesanias.inventoryservice.dto.ProductoDisponibleResponseDto;
 import com.artesanias.inventoryservice.dto.UpdateInventoryByAlmacenRequestDto;
 import com.artesanias.inventoryservice.repository.InventarioRepository;
@@ -64,5 +66,16 @@ public class InventarioController {
     @PatchMapping(value = "/almacen",produces = "application/json")
     public ResponseEntity<?> patchInventarioProductoByAlmacen(@RequestBody UpdateInventoryByAlmacenRequestDto producto){
         return ResponseEntity.ok(inventarioService.patchInventarioProductoByAlmacen(producto));
+    }
+
+    @PostMapping(value = "/almacen/{idalmacen}",produces = "application/json")
+    public ResponseEntity<?> saveProductoInventario(@PathVariable String idalmacen,
+                                                   @RequestBody CreateProductoInventarioDto producto){
+        return ResponseEntity.ok(inventarioService.saveProductoInventario(idalmacen,producto));
+    }
+
+    @DeleteMapping(value = "/almacen/producto",produces = "application/json")
+    public ResponseEntity<?> deleteInventario(@RequestBody DeleteInventarioRequestDto request){
+        return ResponseEntity.ok(inventarioService.deleteInventario(request));
     }
 }

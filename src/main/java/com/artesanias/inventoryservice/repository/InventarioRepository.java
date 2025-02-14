@@ -159,4 +159,21 @@ public interface InventarioRepository extends JpaRepository<InventarioEntity, In
     """,nativeQuery = true)
     @Modifying(clearAutomatically = true)
     int updateInventarioByAlmacen(String idAlmacen, String idProducto, Long cantidad);
+
+
+    @Query(value = """
+    insert into inventario (id_almacen, id_productopk, cantidad)
+    values (:idalmacen,:idProducto, :cantidad);
+    """,nativeQuery = true)
+    @Modifying(clearAutomatically = true)
+    void saveProductoInventario(String idalmacen, String idProducto, Long cantidad);
+
+
+    @Query(value = """
+    delete from inventario
+    where id_almacen = :idAlmacen and id_productopk = :idProducto;
+    """,nativeQuery = true)
+    @Modifying(clearAutomatically = true)
+    void deleteInventario(String idAlmacen, String idProducto);
+
 }
