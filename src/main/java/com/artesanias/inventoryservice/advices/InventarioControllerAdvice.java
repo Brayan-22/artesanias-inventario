@@ -1,7 +1,7 @@
 package com.artesanias.inventoryservice.advices;
 
 import com.artesanias.inventoryservice.exception.ProductosNotFoundException;
-import com.artesanias.inventoryservice.exception.tiendanotfoundexception;
+import com.artesanias.inventoryservice.exception.Tiendanotfoundexception;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +17,8 @@ public class InventarioControllerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    @ExceptionHandler(tiendanotfoundexception.class)
-    public ResponseEntity<?> handleSedeNotFoundException(tiendanotfoundexception ex){
+    @ExceptionHandler(Tiendanotfoundexception.class)
+    public ResponseEntity<?> handleSedeNotFoundException(Tiendanotfoundexception ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }

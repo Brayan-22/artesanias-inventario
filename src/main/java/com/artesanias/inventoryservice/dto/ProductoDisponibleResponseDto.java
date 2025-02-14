@@ -1,5 +1,6 @@
 package com.artesanias.inventoryservice.dto;
 
+import com.artesanias.inventoryservice.dto.projections.ProductoDisponibleProjection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

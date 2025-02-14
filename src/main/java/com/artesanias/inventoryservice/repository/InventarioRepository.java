@@ -1,6 +1,8 @@
 package com.artesanias.inventoryservice.repository;
 
-import com.artesanias.inventoryservice.dto.ProductoDisponibleProjection;
+import com.artesanias.inventoryservice.dto.projections.ProductoAlmacenProjection;
+import com.artesanias.inventoryservice.dto.projections.ProductoDisponibleProjection;
+import com.artesanias.inventoryservice.dto.projections.ProductoInventarioByAlmacenProjection;
 import com.artesanias.inventoryservice.entity.InventarioEntity;
 import com.artesanias.inventoryservice.entity.InventarioId;
 import org.springframework.data.domain.Page;
@@ -109,4 +111,38 @@ public interface InventarioRepository extends JpaRepository<InventarioEntity, In
 """
             ,nativeQuery = true)
     Page<ProductoDisponibleProjection> findProductosByCentral(Pageable pageable);
+
+    @Query(
+            value = """
+    select P.id_productopk as id,
+           P.nombre_producto as nombre,
+           P.precio_producto as precio,
+           P.desc_producto as descripcion,
+           P.url_imagen as urlImagen,
+           P.id_categoriapk as id_categoria
+        from inventario I
+    join almacen A on I.id_almacen = A.id_almacen
+    join producto P on I.id_productopk = P.id_productopk
+    where A.id_almacen = :almacenId;
+    """,nativeQuery = true
+    )
+    Page<ProductoAlmacenProjection> findProductosByAlmacen_Id(String almacenId, Pageable pageable);
+
+    @Query(
+            value = """
+            select P.id_productopk as idProducto,
+            A.id_almacen as idAlmacen,
+            U.direccion as direccion,
+            P.nombre_producto as producto,
+            I.cantidad as cantidad
+            from
+            inventario I
+            join almacen A on I.id_almacen = A.id_almacen
+            join producto P on I.id_productopk = P.id_productopk
+            join ubicacion U on A.id_ubicacion = U.id_ubicacion
+            where A.id_almacen = :almacenId;
+    """, nativeQuery = true)
+    Page<ProductoInventarioByAlmacenProjection> findInventarioByAlmacenId(String almacenId,Pageable pageable);
+
+
 }

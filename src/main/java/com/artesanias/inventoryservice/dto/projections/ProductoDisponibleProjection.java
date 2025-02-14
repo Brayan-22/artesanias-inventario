@@ -1,4 +1,4 @@
-package com.artesanias.inventoryservice.dto;
+package com.artesanias.inventoryservice.dto.projections;
 
 public interface ProductoDisponibleProjection {
     String getProductoid();

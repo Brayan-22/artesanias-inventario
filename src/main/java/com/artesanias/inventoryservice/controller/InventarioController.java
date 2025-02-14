@@ -44,4 +44,18 @@ public class InventarioController {
     ){
         return ResponseEntity.ok(inventarioService.getProductosByCentral(page,size));
     }
+
+    @GetMapping(value = "/catalogo/almacen/{idalmacen}",produces = "application/json")
+    public ResponseEntity<?> getCatalogoByAlmacen(@PathVariable String idalmacen,
+                                                  @RequestParam(required = false) Integer page,
+                                                  @RequestParam(required = false) Integer size){
+        return ResponseEntity.ok(inventarioService.getCatalogoByAlmacen(idalmacen,page,size));
+    }
+
+    @GetMapping(value = "/almacen/{idalmacen}",produces = "application/json")
+    public ResponseEntity<?> getInventarioByAlmacen(@PathVariable String idalmacen,
+                                                    @RequestParam(required = false) Integer page,
+                                                   @RequestParam(required = false) Integer size){
+        return ResponseEntity.ok(inventarioService.getInventarioByAlmacen(idalmacen,page,size));
+    }
 }
