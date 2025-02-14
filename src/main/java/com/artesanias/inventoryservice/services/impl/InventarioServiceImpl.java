@@ -89,7 +89,7 @@ public class InventarioServiceImpl implements InventarioService {
     @Override
     public UpdateInventoryByAlmacenRequestDto patchInventarioProductoByAlmacen(UpdateInventoryByAlmacenRequestDto producto) throws InventarioNotUpdatedException {
         if (Objects.isNull(producto)) throw new InventarioNotUpdatedException("No se pudo actualizar el inventario");
-        if (inventarioRepository.findInventarioEntityByAlmacen_IdAndProducto_Id(producto.getIdAlmacen(), producto.getIdProducto()))
+        if (inventarioRepository.existsInventarioEntityByAlmacen_IdAndProducto_Id(producto.getIdAlmacen(), producto.getIdProducto()))
             throw new InventarioNotUpdatedException("No se pudo actualizar el inventario");
         if (producto.getCantidad() < 0) throw new InventarioNotUpdatedException("No se pudo actualizar el inventario");
         int updated = inventarioRepository.updateInventarioByAlmacen(producto.getIdAlmacen(), producto.getIdProducto(), producto.getCantidad());
