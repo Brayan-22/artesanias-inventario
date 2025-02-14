@@ -1,5 +1,6 @@
 package com.artesanias.inventoryservice.advices;
 
+import com.artesanias.inventoryservice.exception.ProductoNotCreatedException;
 import com.artesanias.inventoryservice.exception.ProductosNotFoundException;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ProductoControllerAdvice {
     @ExceptionHandler(ProductosNotFoundException.class)
     public ResponseEntity<String> handleProductNotFoundException(ProductosNotFoundException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(ProductoNotCreatedException.class)
+    public ResponseEntity<String> handleProductoNotCreatedException(ProductoNotCreatedException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }

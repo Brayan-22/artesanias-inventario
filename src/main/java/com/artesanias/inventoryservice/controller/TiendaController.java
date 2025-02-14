@@ -1,13 +1,10 @@
 package com.artesanias.inventoryservice.controller;
 
-import com.artesanias.inventoryservice.dto.ProductoResponseDto;
-import com.artesanias.inventoryservice.dto.TiendaResponseDto;
+import com.artesanias.inventoryservice.dto.*;
 import com.artesanias.inventoryservice.services.ITiendaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,8 +21,14 @@ public class TiendaController {
     }
 
     @GetMapping("/productos/{idTienda}")
-    public ResponseEntity<List<ProductoResponseDto>> getProductosByTienda(String idTienda){
+    public ResponseEntity<List<ProductoByTiendaResponseDto>> getProductosByTienda(@PathVariable String idTienda){
         return ResponseEntity.ok(tiendaService.getProductosByTienda(idTienda));
     }
+
+    @DeleteMapping("/producto/{idTienda}")
+    public ResponseEntity<?> deleteProductoByTienda(@PathVariable String idTienda,@RequestBody DeleteProductoByTiendaRequestDto requestDto){
+        return ResponseEntity.ok(tiendaService.deleteProductoByTienda(idTienda,requestDto));
+    }
+
 
 }

@@ -1,13 +1,11 @@
 package com.artesanias.inventoryservice.controller;
 
 import com.artesanias.inventoryservice.dto.AlmacenResponseDto;
+import com.artesanias.inventoryservice.dto.UpdateAlmacenDto;
 import com.artesanias.inventoryservice.services.IAlmacenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +26,9 @@ public class AlmacenesController {
         return ResponseEntity.ok(almacenService.getAlmacenById(idAlmacen));
     }
 
+    @PatchMapping("/{idAlmacen}")
+    public ResponseEntity<AlmacenResponseDto> updateAlmacen(String idAlmacen, UpdateAlmacenDto almacen){
+        return ResponseEntity.ok(almacenService.updateAlmacen(idAlmacen, almacen));
+    }
 
 }

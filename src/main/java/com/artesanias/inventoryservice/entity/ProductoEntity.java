@@ -32,4 +32,6 @@ public class ProductoEntity implements Serializable {
     private String urlImagen;
     @OneToMany(mappedBy = "producto")
     private Set<InventarioEntity> inventarios;
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private CategoriaEntity categoria;
 }

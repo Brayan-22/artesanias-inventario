@@ -1,6 +1,7 @@
 package com.artesanias.inventoryservice.services.impl;
 
 import com.artesanias.inventoryservice.dto.AlmacenResponseDto;
+import com.artesanias.inventoryservice.dto.UpdateAlmacenDto;
 import com.artesanias.inventoryservice.entity.AlmacenEntity;
 import com.artesanias.inventoryservice.exception.AlmacenNotFoundException;
 import com.artesanias.inventoryservice.repository.AlmacenEntityRepository;
@@ -30,6 +31,17 @@ public class AlmacenServiceImpl implements IAlmacenService {
     @Override
     public AlmacenResponseDto getAlmacenById(String idAlmacen) {
         AlmacenEntity almacenEntity = almacenEntityRepository.findById(idAlmacen).orElseThrow(() -> new AlmacenNotFoundException("Almacen no encontrado"));
+        return new AlmacenResponseDto(almacenEntity.getId(), almacenEntity.getUbicacion().getDireccion(), almacenEntity.getTienda().getNombre(),almacenEntity.getIsCentral());
+    }
+
+    @Transactional
+    @Override
+    public AlmacenResponseDto updateAlmacen(String idAlmacen, UpdateAlmacenDto almacen) throws AlmacenNotFoundException {
+        AlmacenEntity almacenEntity = almacenEntityRepository.findById(idAlmacen).orElseThrow(()->
+                new AlmacenNotFoundException("Almacen no encontrado"));
+        almacenEntity.getUbicacion().setDireccion(almacen.getDireccion());
+        almacenEntity.setIsCentral(almacen.getIsCentral());
+        almacenEntityRepository.save(almacenEntity);
         return new AlmacenResponseDto(almacenEntity.getId(), almacenEntity.getUbicacion().getDireccion(), almacenEntity.getTienda().getNombre(),almacenEntity.getIsCentral());
     }
 }
