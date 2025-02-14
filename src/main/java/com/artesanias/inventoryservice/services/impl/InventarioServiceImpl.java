@@ -89,7 +89,7 @@ public class InventarioServiceImpl implements InventarioService {
     @Override
     public UpdateInventoryByAlmacenRequestDto patchInventarioProductoByAlmacen(UpdateInventoryByAlmacenRequestDto producto) throws InventarioNotUpdatedException {
         if (Objects.isNull(producto)) throw new InventarioNotUpdatedException("El json no puede ser nulo");
-        if (inventarioRepository.existsInventarioByAlmacenIdAndProductoId(producto.getIdAlmacen(), producto.getIdProducto()))
+        if (inventarioRepository.existsInventarioByAlmacenIdAndProductoId(producto.getIdAlmacen(), producto.getIdProducto())==0)
             throw new InventarioNotUpdatedException("No se encontraron inventarios con la solicitud");
         if (producto.getCantidad() < 0) throw new InventarioNotUpdatedException("Cantidad no permitida");
         int updated = inventarioRepository.updateInventarioByAlmacen(producto.getIdAlmacen(), producto.getIdProducto(), producto.getCantidad());
