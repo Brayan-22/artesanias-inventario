@@ -3,6 +3,7 @@ package com.artesanias.inventoryservice.services;
 import com.artesanias.inventoryservice.dto.ProductoAlmacenResponseDto;
 import com.artesanias.inventoryservice.dto.ProductoDisponibleResponseDto;
 import com.artesanias.inventoryservice.dto.ProductoInventarioByAlmacenDto;
+import com.artesanias.inventoryservice.dto.UpdateInventoryByAlmacenRequestDto;
 import com.artesanias.inventoryservice.exception.AlmacenNotFoundException;
 import com.artesanias.inventoryservice.exception.ProductosNotFoundException;
 import com.artesanias.inventoryservice.exception.Tiendanotfoundexception;
@@ -18,4 +19,6 @@ public interface InventarioService {
     List<ProductoAlmacenResponseDto> getCatalogoByAlmacen(String idalmacen,Integer page,Integer size)throws AlmacenNotFoundException;
 
     List<ProductoInventarioByAlmacenDto> getInventarioByAlmacen(String idalmacen,Integer page,Integer size) throws AlmacenNotFoundException;
+
+    UpdateInventoryByAlmacenRequestDto patchInventarioProductoByAlmacen(UpdateInventoryByAlmacenRequestDto producto);
 }

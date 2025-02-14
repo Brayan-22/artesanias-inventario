@@ -3,7 +3,9 @@ package com.artesanias.inventoryservice.services.impl;
 import com.artesanias.inventoryservice.dto.ProductoAlmacenResponseDto;
 import com.artesanias.inventoryservice.dto.ProductoDisponibleResponseDto;
 import com.artesanias.inventoryservice.dto.ProductoInventarioByAlmacenDto;
+import com.artesanias.inventoryservice.dto.UpdateInventoryByAlmacenRequestDto;
 import com.artesanias.inventoryservice.exception.AlmacenNotFoundException;
+import com.artesanias.inventoryservice.exception.InventarioNotUpdatedException;
 import com.artesanias.inventoryservice.exception.ProductosNotFoundException;
 import com.artesanias.inventoryservice.exception.Tiendanotfoundexception;
 import com.artesanias.inventoryservice.repository.AlmacenEntityRepository;
@@ -84,5 +86,14 @@ public class InventarioServiceImpl implements InventarioService {
         return inventarioRepository.findInventarioByAlmacenId(idalmacen,pageable).map(ProductoInventarioByAlmacenDto::new).toList();
     }
 
-
+    @Override
+    public UpdateInventoryByAlmacenRequestDto patchInventarioProductoByAlmacen(UpdateInventoryByAlmacenRequestDto producto) throws InventarioNotUpdatedException {
+        if (Objects.isNull(producto)) throw new InventarioNotUpdatedException("No se pudo actualizar el inventario");
+        if (inventarioRepository.findInventarioEntityByAlmacen_IdAndProducto_Id(producto.getIdAlmacen(), producto.getIdProducto()))
+            throw new InventarioNotUpdatedException("No se pudo actualizar el inventario");
+        if (producto.getCantidad() < 0) throw new InventarioNotUpdatedException("No se pudo actualizar el inventario");
+        int updated = inventarioRepository.updateInventarioByAlmacen(producto.getIdAlmacen(), producto.getIdProducto(), producto.getCantidad());
+        if (updated == 0) throw new InventarioNotUpdatedException("No se pudo actualizar el inventario");
+        return producto;
+    }
 }

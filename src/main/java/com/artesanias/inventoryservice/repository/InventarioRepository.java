@@ -8,6 +8,7 @@ import com.artesanias.inventoryservice.entity.InventarioId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 
@@ -145,4 +146,12 @@ public interface InventarioRepository extends JpaRepository<InventarioEntity, In
     Page<ProductoInventarioByAlmacenProjection> findInventarioByAlmacenId(String almacenId,Pageable pageable);
 
 
+    boolean findInventarioEntityByAlmacen_IdAndProducto_Id(String almacenId, String productoId);
+
+    @Query(value = """
+    update inventario I set cantidad = :cantidad
+    where I.id_almacen = :idAlmacen and I.id_productopk = :idProducto;
+    """,nativeQuery = true)
+    @Modifying(clearAutomatically = true)
+    int updateInventarioByAlmacen(String idAlmacen, String idProducto, Long cantidad);
 }

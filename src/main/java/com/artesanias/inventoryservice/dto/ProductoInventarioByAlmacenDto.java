@@ -13,7 +13,7 @@ public class ProductoInventarioByAlmacenDto {
     private String idAlmacen;
     private String direccion;
     private String producto;
-    private String cantidad;
+    private Long cantidad;
 
     public ProductoInventarioByAlmacenDto(ProductoInventarioByAlmacenProjection productoInventarioByAlmacenProjection){
         this.idProducto = productoInventarioByAlmacenProjection.getIdProducto();

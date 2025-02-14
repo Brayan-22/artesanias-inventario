@@ -5,5 +5,5 @@ public interface ProductoInventarioByAlmacenProjection {
     String getIdAlmacen();
     String getDireccion();
     String getProducto();
-    String getCantidad();
+    Long getCantidad();
 }

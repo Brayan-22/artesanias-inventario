@@ -1,9 +1,11 @@
 package com.artesanias.inventoryservice.controller;
 
 import com.artesanias.inventoryservice.dto.ProductoDisponibleResponseDto;
+import com.artesanias.inventoryservice.dto.UpdateInventoryByAlmacenRequestDto;
 import com.artesanias.inventoryservice.repository.InventarioRepository;
 import com.artesanias.inventoryservice.services.InventarioService;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,5 +59,10 @@ public class InventarioController {
                                                     @RequestParam(required = false) Integer page,
                                                    @RequestParam(required = false) Integer size){
         return ResponseEntity.ok(inventarioService.getInventarioByAlmacen(idalmacen,page,size));
+    }
+
+    @PatchMapping(value = "/almacen",produces = "application/json")
+    public ResponseEntity<?> patchInventarioProductoByAlmacen(@RequestBody UpdateInventoryByAlmacenRequestDto producto){
+        return ResponseEntity.ok(inventarioService.patchInventarioProductoByAlmacen(producto));
     }
 }
